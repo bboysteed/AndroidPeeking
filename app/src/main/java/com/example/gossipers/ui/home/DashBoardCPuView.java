@@ -85,7 +85,7 @@ public class DashBoardCPuView extends View {
     private int sweepAngle;//扫过的角度
     private int shortageAngle = 80;//缺失的部分的角度
 
-    private float currentValue=10;
+    private float currentValue=0;
 
     public void setLegendName(String legendName) {
         this.legendName = legendName;
