@@ -35,15 +35,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-
-
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         textView = root.findViewById(R.id.text_home);
+        final DashBoardCPuView dashBoardCPuView_cpu = root.findViewById(R.id.cpu_dashboard);
+        final DashBoardRamView dashBoardRamView = root.findViewById(R.id.ram_dashboard);
 
-        mwebSockets = new WebSockets(textView);
+        mwebSockets = new WebSockets(dashBoardCPuView_cpu,dashBoardRamView);
         try {
             mwebSockets.initSocketClient();
         } catch (URISyntaxException e) {
@@ -51,14 +51,13 @@ public class HomeFragment extends Fragment {
         }
         mwebSockets.connect();
 
-        final DashBoardCPuView dashBoardCPuView_cpu = root.findViewById(R.id.cpu_dashboard);
         final Button button = root.findViewById(R.id.home_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(getActivity(),"clicked",Toast.LENGTH_LONG).show();
-                cpuUsedRate+=2.32;
-                dashBoardCPuView_cpu.setCurrentValue(cpuUsedRate);
+//                cpuUsedRate+=2.32;
+//                dashBoardCPuView_cpu.setCurrentValue(cpuUsedRate);
 
 
 
