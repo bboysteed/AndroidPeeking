@@ -19,10 +19,14 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.gossipers.R;
 import com.example.gossipers.ui.utils.BatteryReceiver;
 import com.example.gossipers.ui.utils.ExecCommand;
+import com.example.gossipers.ui.utils.WebSockets;
+
+import java.net.URISyntaxException;
 
 public class HomeFragment extends Fragment {
-
     private HomeViewModel homeViewModel;
+    private WebSockets mwebSockets;
+    private TextView textView;
 //    private DashBoardView dashBoardView;
 //    public static final String SDCARD_ROOT=Environment.getExternalStorageDirectory().getAbsolutePath();
 //    public static final String AAA_PATH=SDCARD_ROOT+"/wifidog.conf";
@@ -30,9 +34,22 @@ public class HomeFragment extends Fragment {
     private float cpuUsedRate=10;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+
+
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        textView = root.findViewById(R.id.text_home);
+
+        mwebSockets = new WebSockets(textView);
+        try {
+            mwebSockets.initSocketClient();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        mwebSockets.connect();
 
         final DashBoardCPuView dashBoardCPuView_cpu = root.findViewById(R.id.cpu_dashboard);
         final Button button = root.findViewById(R.id.home_button);
@@ -42,7 +59,6 @@ public class HomeFragment extends Fragment {
 //                Toast.makeText(getActivity(),"clicked",Toast.LENGTH_LONG).show();
                 cpuUsedRate+=2.32;
                 dashBoardCPuView_cpu.setCurrentValue(cpuUsedRate);
-
 
 
 

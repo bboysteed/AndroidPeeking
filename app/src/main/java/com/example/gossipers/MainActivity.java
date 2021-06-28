@@ -2,6 +2,7 @@ package com.example.gossipers;
 
 import android.os.Bundle;
 
+import com.example.gossipers.ui.utils.WebSockets;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -20,6 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.TextView;
+
+import java.net.URISyntaxException;
 //import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
 
 //        final  DashBoardView dashBoardView_cpu = findViewById(R.id.cpu_dashboard);
 //        Button button_nome = findViewById(R.id.home_button);
