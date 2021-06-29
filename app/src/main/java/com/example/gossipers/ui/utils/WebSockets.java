@@ -25,7 +25,7 @@ import org.json.JSONObject;
 public class WebSockets {
 
     private WebSocketClient mWebSocketClient;
-    private String address = "ws://10.135.180.99:8089/ws";
+    private String address = "ws://127.0.0.1:8089/ws";
     private float cpurate;
     private float ramrate;
 //    private float temprature;

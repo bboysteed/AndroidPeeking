@@ -2,10 +2,13 @@ package com.example.gossipers;
 
 import android.os.Bundle;
 
+import com.example.WsService.WebsocketService;
+import com.example.gossipers.ui.utils.ExecCommand;
 import com.example.gossipers.ui.utils.WebSockets;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
+import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -23,7 +26,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
 
+import java.io.DataOutputStream;
 import java.net.URISyntaxException;
+
+import static java.lang.Runtime.getRuntime;
 //import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        Intent startintent = new Intent(this, WebsocketService.class);
+//        startService(startintent);
+
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -57,6 +68,33 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
 
+//        //websocket server
+//        final Thread serverThread  = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Process process;
+//                DataOutputStream os;
+//                try {
+//                    process = getRuntime().exec("sh");//看情况可能是su
+//                    String cmd = "cd /data/data && ./androidVer";
+//                    os = new DataOutputStream(process.getOutputStream());
+//                    os.write(cmd.getBytes());
+//                    os.writeBytes("\n");
+//                    os.flush();
+//                } catch (Exception e) {
+//                    Log.i("auto", "run command process exception:" + e.toString());
+//                }
+//
+//
+////                    String str3 = new ExecCommand().run(cmd3, 1000).getResult();
+////                    System.out.println(str3);
+//            }
+//        });
+//        serverThread.start();
+
+//        String cmd3="cd /data/data && ./androidVer";
+//        String str3 = new ExecCommand().run(cmd3, -1).getResult();
+//        System.out.println(str3);
 //        final  DashBoardView dashBoardView_cpu = findViewById(R.id.cpu_dashboard);
 //        Button button_nome = findViewById(R.id.home_button);
 //
