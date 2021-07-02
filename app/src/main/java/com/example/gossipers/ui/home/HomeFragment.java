@@ -3,6 +3,7 @@ package com.example.gossipers.ui.home;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,10 @@ import com.example.gossipers.ui.utils.BatteryReceiver;
 import com.example.gossipers.ui.utils.ExecCommand;
 import com.example.gossipers.ui.utils.WebSockets;
 
+import java.io.DataOutputStream;
 import java.net.URISyntaxException;
+
+import static java.lang.Runtime.getRuntime;
 
 public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
@@ -31,18 +35,19 @@ public class HomeFragment extends Fragment {
 //    public static final String SDCARD_ROOT=Environment.getExternalStorageDirectory().getAbsolutePath();
 //    public static final String AAA_PATH=SDCARD_ROOT+"/wifidog.conf";
     private BatteryReceiver receiver;
-    private float cpuUsedRate=10;
+//    private float cpuUsedRate=10;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        textView = root.findViewById(R.id.text_home);
+//        textView = root.findViewById(R.id.text_home);
         final DashBoardCPuView dashBoardCPuView_cpu = root.findViewById(R.id.cpu_dashboard);
         final DashBoardRamView dashBoardRamView = root.findViewById(R.id.ram_dashboard);
 
+
+        //websocket client
         mwebSockets = new WebSockets(dashBoardCPuView_cpu,dashBoardRamView);
         try {
             mwebSockets.initSocketClient();
@@ -58,8 +63,6 @@ public class HomeFragment extends Fragment {
 //                Toast.makeText(getActivity(),"clicked",Toast.LENGTH_LONG).show();
 //                cpuUsedRate+=2.32;
 //                dashBoardCPuView_cpu.setCurrentValue(cpuUsedRate);
-
-
 
 
 //读取目标文件（绝对路径）指定内容“#TrustedMACList ”的那一行
