@@ -79,4 +79,14 @@
         android:background="@color/colorPrimary"
         android:text="Test AIDL" />
 
+    <ProgressBar
+        android:id="@+id/pb_percent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/text_galleryParameters"
+        android:visibility="visible"
+        android:secondaryProgress="100"
+        style="?android:attr/progressBarStyleHorizontal"
+        />
+
 </RelativeLayout>

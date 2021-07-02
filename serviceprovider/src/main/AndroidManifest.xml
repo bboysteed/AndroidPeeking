@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.serviceprovider">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -22,6 +24,14 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="com.example.serviceprovider.myservice"/>
+            </intent-filter>
+        </service>
+
+        <service android:name=".MonitorService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.serviceprovider.monitorservice"/>
             </intent-filter>
         </service>
 
