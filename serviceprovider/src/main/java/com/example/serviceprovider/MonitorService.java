@@ -7,9 +7,11 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 public class MonitorService extends Service {
     @Nullable
@@ -22,27 +24,40 @@ public class MonitorService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         int retVal = super.onStartCommand(intent, flags, startId);
         System.out.printf("System Monitor Service Online, retVal=%s\n", retVal);
-        runService();
+        try {
+            runService();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return retVal;
     }
 
-    public void runService(){
-        String cmdStrStartSrv = "cd /data/data/com.example.serviceprovider/Monitor && ./_androidVer";
+    public void runService() throws IOException {
+//        String cmdStrChgDir = "sh -c cd '/data/data/com.example.serviceprovider/Monitor/'";
+        String cmdStrStartSrv = "sh -c './_androidVer'";
         Runtime run = Runtime.getRuntime();
-        try {
-            Process process = run.exec(cmdStrStartSrv);
-            InputStream in = process.getInputStream();
-            InputStreamReader reader = new InputStreamReader(in);
-            BufferedReader br = new BufferedReader(reader);
-            StringBuffer sb = new StringBuffer();
-            String message;
-            while((message = br.readLine()) != null) {
-                sb.append(message);
+        Process process = run.exec(cmdStrStartSrv, null, new File("data/data/com.example.serviceprovider/Monitor/"));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InputStream in = process.getErrorStream();
+                    InputStreamReader reader = new InputStreamReader(in);
+                    BufferedReader br = new BufferedReader(reader);
+                    StringBuffer sb = new StringBuffer();
+                    String message;
+                    for (int i = 0; i < 100; i++) {
+                        System.out.println("reading");
+                        message = br.readLine();
+                        sb.append(message);
+                    }
+                    System.out.println("cmd output:" + sb);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            System.out.println("cmd output:" + sb);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }).start();
+
     }
 }

@@ -27,14 +27,6 @@
             </intent-filter>
         </service>
 
-        <service android:name=".MonitorService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.example.serviceprovider.monitorservice"/>
-            </intent-filter>
-        </service>
-
     </application>
 
 </manifest>

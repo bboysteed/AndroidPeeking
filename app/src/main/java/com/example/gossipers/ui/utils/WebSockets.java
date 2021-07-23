@@ -83,7 +83,6 @@ public class WebSockets {
                     closeConnect();
                 }
 
-
                 @Override
                 public void onError(Exception e) {
                     System.out.println("error:" + e);
@@ -95,14 +94,10 @@ public class WebSockets {
 
     //连接
     public void connect() {
-
         Runnable socketRun = new Runnable() {
             @Override
             public void run() {
                 mWebSocketClient.connect();
-
-
-
             }
         };
         socketRun.run();

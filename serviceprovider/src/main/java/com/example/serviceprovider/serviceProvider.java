@@ -2,6 +2,7 @@ package com.example.serviceprovider;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,8 +13,8 @@ public class serviceProvider extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_provider);
 
-        Intent monitorIntent = new Intent(this, MonitorService.class);
-        monitorIntent.setAction("com.example.serviceprovider.monitorservice");
-        this.startService(monitorIntent);
+        Intent aidlIntent = new Intent(this, MyService.class);
+        aidlIntent.setAction("com.example.serviceprovider.myservice");
+        this.startService(aidlIntent);
     }
 }
