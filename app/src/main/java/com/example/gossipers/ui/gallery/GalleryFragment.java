@@ -20,6 +20,7 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.example.gossipers.R;
+import com.example.gossipers.ui.gallery.GalleryViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;

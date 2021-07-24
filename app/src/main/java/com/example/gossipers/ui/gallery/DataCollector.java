@@ -2,7 +2,6 @@ package com.example.gossipers.ui.gallery;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class DataCollector {
     private final InputStream Is;
@@ -36,7 +35,6 @@ public class DataCollector {
             while(true){
                 i = i % 4;  // index for data in app
                 String msg = in.readLine().trim();
-                System.out.println(msg);
 
                 if (msg.equals(MsgExit))
                     break;
@@ -55,11 +53,15 @@ public class DataCollector {
             System.out.printf("ACK not received, receive:%s\n", tempTest);
         System.out.println("socket connection close");
 
+        checkData();
+
+    }
+
+    public void checkData() {
         for (String[] eachApp : GalleryFragment.AppList){
             for (String data : eachApp)
                 System.out.println(data);
         }
-
     }
 
 }
