@@ -1,9 +1,10 @@
-package com.example.gossipers.ui.gallery;
+ package com.example.gossipers.ui.gallery;
 
 import java.io.*;
 import java.net.Socket;
 
 public class DataCollector {
+    private Socket client;
     private final InputStream Is;
     private final OutputStream Os;
     private static final String MsgExit = "exit";
@@ -16,7 +17,7 @@ public class DataCollector {
         Os = client.getOutputStream();
     }
 
-    public void recvData() throws IOException, InterruptedException {
+    public void recvData() throws IOException {
         int i = 0;  // index for adding string array "data" to arrayList "apps"
         String[] app = new String[4]; // to store data for each app
 

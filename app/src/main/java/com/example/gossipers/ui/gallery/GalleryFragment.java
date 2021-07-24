@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class GalleryFragment extends Fragment{
     private View root;
-    private GalleryViewModel galleryViewModel;
+//    private GalleryViewModel galleryViewModel;
 
     // params for tables
     public static int AppNums;
@@ -42,18 +42,13 @@ public class GalleryFragment extends Fragment{
 
     // variable and obj for refresh UI
     private boolean Exit = false;
-    private int RefreshInterval = 1000;  // ms
+    private final int RefreshInterval = 1000;  // ms
 
     // use handler + msg to refresh UI in thread
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            try {
-                getData();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
             setTable();
         }
     };
@@ -62,9 +57,10 @@ public class GalleryFragment extends Fragment{
         public void run() {
             while(!Exit) {
                 try {
-                    Thread.sleep(RefreshInterval);
+                    getData();  // must set up connection in THREAD
                     mHandler.sendMessage(mHandler.obtainMessage());
-                } catch (InterruptedException e) {
+                    Thread.sleep(RefreshInterval);
+                } catch (InterruptedException | IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -75,37 +71,36 @@ public class GalleryFragment extends Fragment{
     // once fragment creates view, get apps' data and create table and use thread to refresh UI
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
+//        galleryViewModel =
+//                ViewModelProviders.of(this).get(GalleryViewModel.class);
         root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        try {
-            getData();        // get data from socket
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        setTable();       // show data
         Refresh.start();  // use a thread to refresh UI
         return root;
     }
 
-    // should get data from socket, now we generate data locally
+    // get data from socket
     public void getData() throws IOException, InterruptedException {
-        DataCollector dataCollector = new DataCollector(6666, "127.0.0.1");
         AppList.clear();
-        dataCollector.recvData();
-//        for (int i = 0; i < 30; i++) {
-//            String[] data = new String[4];
-//            data[0] = "com.example.wwd666";
-//            data[1] = Integer.toString((int) (Math.random() * 10000));
-//            data[2] = Integer.toString((int) (Math.random() * 100));
-//            data[3] = Integer.toString((int) (Math.random() * 100));
-//            AppList.add(data);
-//        }
-        sort();
+//        DataCollector dataCollector = new DataCollector(6666, "127.0.0.1");
+//        dataCollector.recvData();
+        genLocalData();
+        sortData();
+    }
+
+    // generate data locally
+    public void genLocalData(){
+        for (int i = 0; i < 30; i++) {
+            String[] data = new String[4];
+            data[0] = "com.example.wwd666";
+            data[1] = Integer.toString((int) (Math.random() * 10000));
+            data[2] = Integer.toString((int) (Math.random() * 100));
+            data[3] = Integer.toString((int) (Math.random() * 100));
+            AppList.add(data);
+        }
     }
 
     // sort by app's CPU usage
-    public void sort(){
+    public void sortData(){
         // bubble sort
         for (int i = 0; i < AppList.size(); i++){
             for (int j = 0; j < AppList.size() - i - 1; j++){
