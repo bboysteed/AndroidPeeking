@@ -30,6 +30,7 @@ public class GalleryFragment extends Fragment{
 //    private GalleryViewModel galleryViewModel;
 
     // params for tables
+
     private boolean overThread;
     private final int TxtSize = 15;
     private final int HeadTxtSize = 20;
@@ -43,7 +44,7 @@ public class GalleryFragment extends Fragment{
     private boolean Exit = false;
     private final int RefreshInterval = 1000;  // ms
 
-    // use handler + msg to refresh UI in thread
+    // use handler to handle msg to refresh UI in thread
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -52,7 +53,7 @@ public class GalleryFragment extends Fragment{
         }
     };
 
-    private final Runnable mRunnable = new Runnable() {
+    private final Thread Refresh = new Thread(new Runnable() {
         public void run() {
             while(!Exit) {
                 try {
@@ -64,8 +65,7 @@ public class GalleryFragment extends Fragment{
                 }
             }
         }
-    };
-    private final Thread Refresh = new Thread(mRunnable);
+    });
 
     // once fragment creates view, get apps' data and create table and use thread to refresh UI
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -73,6 +73,12 @@ public class GalleryFragment extends Fragment{
 //        galleryViewModel =
 //                ViewModelProviders.of(this).get(GalleryViewModel.class);
         root = inflater.inflate(R.layout.fragment_gallery, container, false);
+        // set up connection to collect data
+//        try {
+//            DataCollector dataCollector = new DataCollector(6666, "127.0.0.1");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         Refresh.start();  // use a thread to refresh UI
         return root;
     }
@@ -80,7 +86,6 @@ public class GalleryFragment extends Fragment{
     // get data from socket
     public void getData() throws IOException, InterruptedException {
         AppList.clear();
-//        DataCollector dataCollector = new DataCollector(6666, "127.0.0.1");
 //        dataCollector.recvData();
         genLocalData();
         sortData();
@@ -88,7 +93,7 @@ public class GalleryFragment extends Fragment{
 
     // generate data locally
     public void genLocalData(){
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < (int) (Math.random() * 35); i++) {
             String[] data = new String[4];
             data[0] = "com.example.wwd666";
             data[1] = Integer.toString((int) (Math.random() * 10000));
@@ -146,7 +151,7 @@ public class GalleryFragment extends Fragment{
             tableLayout.setStretchAllColumns(true);
             // set head columns
             setHeadColumns(tableLayout);
-            //生成appNums行，3列的表格
+            // 生成appNums行，4列的表格
             for(String[] app : AppList) {
                 TableRow tableRow = new TableRow(this.getContext());
                 // judge if cpu usage is over limit
