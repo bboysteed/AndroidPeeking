@@ -102,27 +102,36 @@ public class SlideshowFragment extends Fragment implements View.OnClickListener{
     }
 
     public void check() throws InterruptedException {
-        getParams();
+        if (!getParams())
+            return;
         for (int i = 0; i < threadNum; i++){
             new MyThread(loopNum, interval, Integer.toString(i), iService).start();
         }
         waitForComplete();
         if (!SlideshowFragment.runWell){
-            Toast.makeText(getActivity(), "test failed", Toast.LENGTH_SHORT).show();;
+            Toast.makeText(getActivity(), "test failed", Toast.LENGTH_SHORT).show();
         }else {
-            Toast.makeText(getActivity(), "test success", Toast.LENGTH_SHORT).show();;
+            Toast.makeText(getActivity(), "test success", Toast.LENGTH_SHORT).show();
         }
         System.out.printf("AIDL TEST RESULT(false=fail, true=success): %s\n", runWell);
     }
 
-    public void getParams(){
+    public boolean getParams(){
         EditText etThreadNum = (EditText) this.getView().findViewById (R.id.et_threadNum);
         EditText etLoopNum = (EditText) this.getView().findViewById (R.id.et_loopNum);
         EditText etInterval = (EditText) this.getView().findViewById (R.id.et_interval);
 
+        if (etThreadNum.getText().toString().equals("")
+        || etLoopNum.getText().toString().equals("")
+        || etInterval.getText().toString().equals("")) {
+            Toast.makeText(getActivity(), "plz fill in parameters", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         threadNum = Integer.parseInt(etThreadNum.getText().toString());
         loopNum = Integer.parseInt(etLoopNum.getText().toString());
         interval = Integer.parseInt(etInterval.getText().toString());
+        return true;
     }
 
     public void waitForComplete() throws InterruptedException {
