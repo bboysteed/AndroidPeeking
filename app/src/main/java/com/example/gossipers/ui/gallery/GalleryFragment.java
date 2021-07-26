@@ -30,7 +30,6 @@ public class GalleryFragment extends Fragment{
 //    private GalleryViewModel galleryViewModel;
 
     // params for tables
-    public static int AppNums;
     private boolean overThread;
     private final int TxtSize = 15;
     private final int HeadTxtSize = 20;
