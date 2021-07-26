@@ -30,7 +30,7 @@ public class GalleryFragment extends Fragment{
 //    private GalleryViewModel galleryViewModel;
 
     // params for tables
-
+    private DataCollector dataCollector;
     private boolean overThread;
     private final int TxtSize = 15;
     private final int HeadTxtSize = 20;
@@ -57,6 +57,7 @@ public class GalleryFragment extends Fragment{
         public void run() {
             while(!Exit) {
                 try {
+                    dataCollector = new DataCollector(6666, "127.0.0.1");
                     getData();  // must set up connection in THREAD
                     mHandler.sendMessage(mHandler.obtainMessage());
                     Thread.sleep(RefreshInterval);
@@ -74,11 +75,6 @@ public class GalleryFragment extends Fragment{
 //                ViewModelProviders.of(this).get(GalleryViewModel.class);
         root = inflater.inflate(R.layout.fragment_gallery, container, false);
         // set up connection to collect data
-//        try {
-//            DataCollector dataCollector = new DataCollector(6666, "127.0.0.1");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         Refresh.start();  // use a thread to refresh UI
         return root;
     }
@@ -86,8 +82,8 @@ public class GalleryFragment extends Fragment{
     // get data from socket
     public void getData() throws IOException, InterruptedException {
         AppList.clear();
-//        dataCollector.recvData();
-        genLocalData();
+        dataCollector.recvData();
+//        genLocalData();
         sortData();
     }
 
