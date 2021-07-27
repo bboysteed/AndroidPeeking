@@ -53,12 +53,18 @@ public class GalleryFragment extends Fragment{
         }
     };
 
+    // socket should not be set up in main thread
     private final Thread Refresh = new Thread(new Runnable() {
         public void run() {
+            try {
+                // only create one socket
+                dataCollector = new DataCollector(6666, "127.0.0.1");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             while(!Exit) {
                 try {
-                    dataCollector = new DataCollector(6666, "127.0.0.1");
-                    getData();  // must set up connection in THREAD
+                    getData();
                     mHandler.sendMessage(mHandler.obtainMessage());
                     Thread.sleep(RefreshInterval);
                 } catch (InterruptedException | IOException e) {

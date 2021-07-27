@@ -4,17 +4,17 @@ import java.io.*;
 import java.net.Socket;
 
 public class DataCollector {
-    private Socket Client;
-    private final InputStream Is;
+    private final Socket Client;
     private final OutputStream Os;
+    private final InputStream Is;
     private static final String MsgExit = "exit";
     private static final String MsgACK = "ack";
     private static final String MsgPull = "pull";
 
     DataCollector(int p, String ip) throws IOException {
-        Socket Client = new Socket(ip, p);
-        Is = Client.getInputStream();
+        Client = new Socket(ip, p);
         Os = Client.getOutputStream();
+        Is = Client.getInputStream();
     }
 
     /*
@@ -34,6 +34,8 @@ public class DataCollector {
 
         // create inputStream buffer, recv data from server
         BufferedReader in = new BufferedReader(new InputStreamReader(Is));
+        while (!in.ready())
+            System.out.println("BufferReader in is empty, waiting");
         String symbol = in.readLine().trim();
         if (symbol.equals(MsgACK)){
             System.out.println("Client received ACK");  // log
@@ -58,8 +60,7 @@ public class DataCollector {
             System.out.printf("ACK not received, receive:%s\n", symbol);
         System.out.println("transmission complete");
 
-        checkData();
-
+//        checkData();
     }
 
     public void checkData() {
